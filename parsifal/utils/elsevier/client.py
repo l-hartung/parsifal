@@ -16,9 +16,9 @@ class ElsevierClient(object):
             url = u'{0}{1}'.format(self.host, endpoint)
             params['apiKey'] = self.api_key
             if requestType == 'POST':
-                response = requests.post(url, params)
+                response = requests.post(url, params = params)
             else:
-                response = requests.get(url, params)
+                response = requests.get(url, params = params)
         else:
             raise ElsevierException('No API Key.')
         return self._parse_response(response)
@@ -37,4 +37,5 @@ class ElsevierClient(object):
         return self._request('/search/scopus', params)
 
     def search_science_direct(self, params):
-        return self._request('/search/scidir', params)
+        #return self._request('/search/scidir', params)
+        return self._request("/search/sciencedirect", params)
