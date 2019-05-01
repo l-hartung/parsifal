@@ -3,6 +3,7 @@ from unipath import Path
 import dj_database_url
 from decouple import config, Csv
 from mendeley import Mendeley
+import os.path
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)
@@ -15,13 +16,13 @@ TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
     'default': dj_database_url.config(
-      default = config('DATABASE_URL'))
+        default = config('DATABASE_URL'))
 }
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 ADMINS = (
-    ('Vitor Freitas', 'vitorfs@gmail.com'),
+    ('Lina Hartung', 'lh.parsifal@gmx.net'),
 )
 
 MANAGERS = ADMINS
@@ -106,18 +107,18 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 DEFAULT_FROM_EMAIL = 'Parsifal Team <noreply@parsif.al>'
 EMAIL_SUBJECT_PREFIX = '[Parsifal] '
-SERVER_EMAIL = 'application@parsif.al'
+SERVER_EMAIL = 'lh.parsifal@gmx.net'
 
-MENDELEY_ID = config('MENDELEY_ID', cast=int)
-MENDELEY_SECRET = config('MENDELEY_SECRET')
-MENDELEY_REDIRECT_URI = config('MENDELEY_REDIRECT_URI')
+MENDELEY_ID = config('MENDELEY_ID', default=0, cast=int)
+MENDELEY_SECRET = config('MENDELEY_SECRET', default=None)
+MENDELEY_REDIRECT_URI = config('MENDELEY_REDIRECT_URI', default=None)
 MENDELEY = Mendeley(MENDELEY_ID, client_secret=MENDELEY_SECRET, redirect_uri=MENDELEY_REDIRECT_URI)
 
-DROPBOX_APP_KEY = config('DROPBOX_APP_KEY')
-DROPBOX_SECRET = config('DROPBOX_SECRET')
-DROPBOX_REDIRECT_URI = config('DROPBOX_REDIRECT_URI')
+DROPBOX_APP_KEY = config('DROPBOX_APP_KEY', default=None)
+DROPBOX_SECRET = config('DROPBOX_SECRET', default=None)
+DROPBOX_REDIRECT_URI = config('DROPBOX_REDIRECT_URI', default=None)
 
-ELSEVIER_API_KEY = config('ELSEVIER_API_KEY')
+ELSEVIER_API_KEY = config('ELSEVIER_API_KEY', default=None)
 
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: '/%s/' % u.username,
