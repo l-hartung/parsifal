@@ -2,6 +2,7 @@
 
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+import json
 
 
 def export_review_to_docx(review, sections):
@@ -177,3 +178,26 @@ def export_review_to_docx(review, sections):
         document.add_heading('Data Analysis', level=3)
 
     return document
+
+
+def jsonify(obj):
+    return json.dumps(obj, default=lambda x: getattr(x, '__dict__', str(x)), indent=4)
+
+
+def append_to_review_doc(ref):
+    name = []
+    for n in ref:
+        name.append(n.__dict__)
+    return name
+
+
+def export_review_to_json(review, sections):
+    review_doc = review.__dict__
+    review_doc["sources"] = append_to_review_doc(review.sources.all())
+    review_doc["inclusion criteria"] = append_to_review_doc(review.get_inclusion_criterias())
+    review_doc["exclusion criteria"] = append_to_review_doc(review.get_exclusion_criterias())
+    articles = {}
+    for source in review.sources.all():
+        articles[source.name] = append_to_review_doc(review.get_source_articles(source.id))
+    review_doc["all articles"] = list(review.get_source_articles().values())
+    return jsonify(review_doc)

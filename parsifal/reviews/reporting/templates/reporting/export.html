@@ -16,6 +16,11 @@
       });
 
       $(".js-export-docx").click(function () {
+        $("input[name=export-format]").val("docx");
+        $(this).closest("form").submit();
+      });
+      $(".js-export-json").click(function () {
+        $("input[name=export-format]").val("json");
         $(this).closest("form").submit();
       });
     });
@@ -26,8 +31,9 @@
 
   {% include 'reporting/includes/header.html' with active_tab='export' %}
 
-  <form method="get" action="{% url 'reviews:reporting:download_docx' %}">
+  <form method="get" action="{% url 'reviews:reporting:download' %}">
     <input type="hidden" name="review-id" value="{{ review.pk }}">
+    <input type="hidden" name="export-format" value="">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Download a Report</h3>
@@ -115,6 +121,7 @@
           </button>
           <ul class="dropdown-menu">
             <li><a href="javascript:void(0);" class="js-export-docx"><em>.docx</em></a></li>
+            <li><a href="javascript:void(0);" class="js-export-json"><em>.json (Ignoring filters)</em></a></li>
           </ul>
         </div>
       </div>
