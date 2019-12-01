@@ -3,6 +3,7 @@
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import json
+import codecs
 
 
 def export_review_to_docx(review, sections):
@@ -181,7 +182,7 @@ def export_review_to_docx(review, sections):
 
 
 def jsonify(obj):
-    return json.dumps(obj, default=lambda x: getattr(x, '__dict__', str(x)), indent=4)
+    return json.dumps(obj, default=lambda x: getattr(x, '__dict__', str(x)), indent=4, ensure_ascii=False).encode('utf8')
 
 
 def append_to_review_doc(ref):
@@ -196,8 +197,12 @@ def export_review_to_json(review, sections):
     review_doc["sources"] = append_to_review_doc(review.sources.all())
     review_doc["inclusion criteria"] = append_to_review_doc(review.get_inclusion_criterias())
     review_doc["exclusion criteria"] = append_to_review_doc(review.get_exclusion_criterias())
-    articles = {}
-    for source in review.sources.all():
-        articles[source.name] = append_to_review_doc(review.get_source_articles(source.id))
     review_doc["all articles"] = list(review.get_source_articles().values())
+    #review_doc["duplicated articles"] = append_to_review_doc(review.get_duplicate_articles())
+    review_doc["duplicated articles"] = list(review.get_duplicate_articles())#.values())
+    #review_doc["accepted articles"] = append_to_review_doc(review.get_accepted_articles())
+    review_doc["accepted articles"] = list(review.get_accepted_articles().values())
+    #review_doc["final selection articles"] = append_to_review_doc(review.get_final_selection_articles())
+    review_doc["final selection articles"] = list(review.get_final_selection_articles().values())
+    review_doc["search-string"] = review.get_generic_search_string()
     return jsonify(review_doc)
