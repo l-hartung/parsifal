@@ -22,7 +22,7 @@ DATABASES = {
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 ADMINS = (
-    ('Lina Hartung', 'lh.parsifal@gmx.net'),
+    ('Parsifal Admin', 'admin@parsifal.local'),
 )
 
 MANAGERS = ADMINS
