@@ -40,8 +40,9 @@ reminder.md
 
 *.sqlite3
 
-.env
+# .env
 
 *.bib
 maildumps
 .idea
+
