@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  parsifal:
+      build: .
+      command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver [::]:8000"
+      volumes:
+          # change the left part up to the colon to an existing path on your host machine
+          - /parsifal-db:/parsifal-db
+      ports:
+          - "8000:8000"
+      environment:
+          # change this value to a random string
+          - SECRET_KEY=zugr6gvgf5r6ffzugzuft66r6tgzgfffvhgdtrd
