@@ -201,7 +201,4 @@ def export_review_to_json(review, sections):
     review_doc["duplicated articles"] = list(review.get_duplicate_articles())
     review_doc["accepted articles"] = list(review.get_accepted_articles().values())
     review_doc["final selection articles"] = list(review.get_final_selection_articles().values())
-    s_string = review.get_generic_search_string()
-    if s_string is not None:
-        review_doc["search-string"] = review.get_generic_search_string()
     return jsonify(review_doc)
